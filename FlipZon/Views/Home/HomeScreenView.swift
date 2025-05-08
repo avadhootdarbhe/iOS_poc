@@ -1,53 +1,50 @@
-
 import SwiftUI
 
 struct HomeScreenView: View {
     @StateObject var viewModel = HomeViewModel()
     @State private var searchText = ""
+    
     var body: some View {
-        ScrollView {
-            VStack {
-                Spacer().frame(height: 20)
-                SearchBar(text: $searchText)
-                    .padding([.leading, .trailing], 16)
-                Spacer().frame(height: 20)
-                Text("Products")
-                    .font(.title)
-                    .foregroundColor(.brown)
-                    .fontWeight(.bold)
-                    .padding(.horizontal, 16)
-                    .frame(maxWidth: screenWidth, alignment: .leading)
-                LazyVGrid(
-                    columns: [
-                        GridItem(.flexible()),
-                        GridItem(.flexible()),
-                    ],
-                    spacing: 5
-                ){
-                    ForEach(filteredProducts){
-                        product in
-                        ProductCard(product: product)
-                            .frame(height: 250)
-                    }
+        VStack {
+            
+            
+            if viewModel.isLoading {
+                ProgressView("Loading Products...")
+                    .padding()
+            } else if let error = viewModel.errorMessage {
+                VStack {
+                    Text("Failed to load products")
+                        .foregroundColor(.red)
+                    Text(error)
+                        .font(.caption)
+                        .foregroundColor(.gray)
                 }
                 .padding()
-            }
-            .navigationTitle("Home")
-            .navigationBarTitleDisplayMode(.inline)
-            
-        }
-        
-    }
-    
-    var filteredProducts: [Product] {
-            if searchText.isEmpty {
-                return viewModel.products
             } else {
-                return viewModel.products.filter {
-                    $0.name.lowercased().contains(searchText.lowercased())
+                ScrollView {
+                    SearchBar(text: $searchText)
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
+                        ForEach(filteredProducts) { product in
+                            ProductCard(product: product)
+                                .frame(height: 250)
+                        }
+                    }
+                    .padding()
                 }
             }
         }
+        .navigationBarTitle("Home", displayMode: .inline)
+    }
+
+    var filteredProducts: [Product] {
+        if searchText.isEmpty {
+            return viewModel.products
+        } else {
+            return viewModel.products.filter {
+                $0.title.lowercased().contains(searchText.lowercased())
+            }
+        }
+    }
 }
 
 #Preview {

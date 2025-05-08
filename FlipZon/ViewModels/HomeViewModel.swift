@@ -2,20 +2,30 @@ import Foundation
 
 class HomeViewModel: ObservableObject {
     @Published var products: [Product] = []
-    
+    @Published var isLoading = false
+    @Published var errorMessage: String?
+
     init() {
-        // Mock data
-        self.products = [
-            Product(name: "T-Shirt", price: 19.99, image: "product"),
-            Product(name: "Jeans", price: 39.99, image: "product"),
-            Product(name: "Sneakers", price: 59.99, image: "product"),
-            Product(name: "Watch", price: 99.99, image: "product"),
-            Product(name: "Watch", price: 99.99, image: "product"),
-            Product(name: "Watch", price: 99.99, image: "product"),
-            Product(name: "Watch", price: 99.99, image: "product"),
-            Product(name: "Watch", price: 99.99, image: "product"),
-            
-            // Add more mock products as needed
-        ]
+        fetchProducts()
+    }
+
+    func fetchProducts() {
+        isLoading = true
+        errorMessage = nil
+
+        Task {
+            do {
+                let fetchedProducts = try await APIService.shared.fetchProducts()
+                DispatchQueue.main.async {
+                    self.products = fetchedProducts
+                    self.isLoading = false
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.errorMessage = error.localizedDescription
+                    self.isLoading = false
+                }
+            }
+        }
     }
 }
