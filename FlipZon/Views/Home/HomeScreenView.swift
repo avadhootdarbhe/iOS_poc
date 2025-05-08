@@ -5,35 +5,39 @@ struct HomeScreenView: View {
     @State private var searchText = ""
     
     var body: some View {
-        VStack {
-            
-            
-            if viewModel.isLoading {
-                ProgressView("Loading Products...")
-                    .padding()
-            } else if let error = viewModel.errorMessage {
-                VStack {
-                    Text("Failed to load products")
-                        .foregroundColor(.red)
-                    Text(error)
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                }
-                .padding()
-            } else {
-                ScrollView {
-                    SearchBar(text: $searchText)
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                        ForEach(filteredProducts) { product in
-                            ProductCard(product: product)
-                                .frame(height: 250)
-                        }
+        NavigationStack {
+            VStack {
+                
+                
+                if viewModel.isLoading {
+                    ProgressView("Loading Products...")
+                        .padding()
+                } else if let error = viewModel.errorMessage {
+                    VStack {
+                        Text("Failed to load products")
+                            .foregroundColor(.red)
+                        Text(error)
+                            .font(.caption)
+                            .foregroundColor(.gray)
                     }
                     .padding()
+                } else {
+                    ScrollView {
+                        SearchBar(text: $searchText)
+                            .padding(.horizontal, 16)
+                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
+                            ForEach(filteredProducts) { product in
+                                ProductCard(product: product)
+                                    .frame(height: 250)
+                            }
+                        }
+                        .padding()
+                    }
                 }
             }
+            .navigationBarTitle("Products")
+            
         }
-        .navigationBarTitle("Home", displayMode: .inline)
     }
 
     var filteredProducts: [Product] {
