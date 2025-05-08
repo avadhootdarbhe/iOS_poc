@@ -3,42 +3,36 @@ import SwiftUI
 struct HomeScreenView: View {
     @StateObject var viewModel = HomeViewModel()
     @State private var searchText = ""
-    
+    let columns = [GridItem(.flexible()), GridItem(.flexible())]
     var body: some View {
-        NavigationStack {
-            VStack {
-                
-                
-                if viewModel.isLoading {
-                    ProgressView("Loading Products...")
-                        .padding()
-                } else if let error = viewModel.errorMessage {
-                    VStack {
-                        Text("Failed to load products")
-                            .foregroundColor(.red)
-                        Text(error)
-                            .font(.caption)
-                            .foregroundColor(.gray)
+            NavigationView {
+                ScrollView {
+                    SearchBar(text: $searchText)
+                        .padding(.horizontal, 20)
+                    LazyVGrid(columns: columns, spacing: 16) {
+                        ForEach(viewModel.products) { product in
+                            ProductCard(product: product)
+                                .onAppear {
+                                    if product == viewModel.products[viewModel.products.count - 3] {
+                                        viewModel.loadNextPage()
+                                    }
+
+                                }
+                        }
                     }
                     .padding()
-                } else {
-                    ScrollView {
-                        SearchBar(text: $searchText)
-                            .padding(.horizontal, 16)
-                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                            ForEach(filteredProducts) { product in
-                                ProductCard(product: product)
-                                    .frame(height: 250)
-                            }
-                        }
-                        .padding()
+                    
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .padding()
                     }
                 }
+                .navigationTitle("Products")
             }
-            .navigationBarTitle("Products")
-            
+            .onAppear {
+                viewModel.loadInitialProducts()
+            }
         }
-    }
 
     var filteredProducts: [Product] {
         if searchText.isEmpty {

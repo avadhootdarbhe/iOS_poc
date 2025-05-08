@@ -1,6 +1,7 @@
+
 import Foundation
 
-struct Product: Identifiable, Decodable {
+struct Product: Codable, Identifiable, Equatable {
     let id: Int
     let title: String
     let price: Double
@@ -8,9 +9,10 @@ struct Product: Identifiable, Decodable {
     let category: Category
     let images: [String]
     
-    struct Category: Decodable {
+    struct Category: Codable, Equatable {
         let id: Int
         let name: String
+        let slug: String
         let image: String
     }
 }
