@@ -23,7 +23,7 @@ struct ProductCard: View {
                     EmptyView()
                 }
             }
-            .frame(height: 150)
+            .frame( width: 120,height: 150)
             .clipped()
             .cornerRadius(12)
             .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)

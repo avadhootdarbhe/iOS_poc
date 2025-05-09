@@ -28,6 +28,12 @@ struct HomeScreenView: View {
                     }
                 }
                 .navigationTitle("Products")
+                .navigationBarItems(trailing:
+                                        NavigationLink(destination: SettingScreenView()) {
+                                    Image(systemName: "gearshape.fill")
+                                        .imageScale(.large)
+                                }
+                            )
             }
             .onAppear {
                 viewModel.loadInitialProducts()

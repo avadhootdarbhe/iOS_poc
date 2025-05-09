@@ -19,9 +19,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct FlipZonApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @StateObject var session = SessionManager()
     var body: some Scene {
         WindowGroup {
-            SplashScreenView()
+            SplashScreenView().environmentObject(session)
         }
     }
 }

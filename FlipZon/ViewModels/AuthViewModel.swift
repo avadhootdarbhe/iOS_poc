@@ -70,6 +70,19 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+    
+    func logout() {
+        isLoading = true
+        errorMessage = nil
+        do {
+            try FirebaseManager.shared.signOut()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        
+    }
+
+
 
     
 }

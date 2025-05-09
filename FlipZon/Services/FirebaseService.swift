@@ -1,11 +1,12 @@
 import Foundation
 import FirebaseAuth
 
-class FirebaseManager {
+class FirebaseManager:ObservableObject {
     
     static let shared = FirebaseManager()
     
     private init() {}
+    @Published var isLoggedIn: Bool = Auth.auth().currentUser != nil
     
     // Sign Up
     func signUp(email: String, password: String, completion: @escaping (Result<AuthDataResult, Error>) -> Void) {
