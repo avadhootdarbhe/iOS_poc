@@ -10,16 +10,21 @@ struct HomeScreenView: View {
                     SearchBar(text: $searchText)
                         .padding(.horizontal, 20)
                     LazyVGrid(columns: columns, spacing: 16) {
-                        ForEach(viewModel.products) { product in
-                            ProductCard(product: product)
-                                .onAppear {
-                                    if product == viewModel.products[viewModel.products.count - 3] {
-                                        viewModel.loadNextPage()
+                        ForEach(Array(viewModel.products.enumerated()), id: \.element.id) { index, product in
+                            NavigationLink(destination: ProductDetailScreenView(product: product)) {
+                                ProductCard(product: product)
+                                    .onAppear {
+                                        // Safe pagination trigger — when user scrolls near end
+                                        if index == viewModel.products.count - 3 {
+                                            viewModel.loadNextPage()
+                                        }
                                     }
-
-                                }
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            
                         }
                     }
+
                     .padding()
                     
                     if viewModel.isLoading {
