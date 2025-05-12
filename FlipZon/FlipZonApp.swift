@@ -20,9 +20,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct FlipZonApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var session = SessionManager()
+    @StateObject var cartManager = CartManager()
     var body: some Scene {
         WindowGroup {
-            SplashScreenView().environmentObject(session)
+            SplashScreenView()
+                .environmentObject(session)
+                .environmentObject(cartManager)
         }
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		57839E112DD2070F00297406 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 57839E102DD2070F00297406 /* FirebaseFirestore */; };
 		57A381242DCC842B00DF9641 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 57A381232DCC842B00DF9641 /* FirebaseAuth */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +71,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57A381242DCC842B00DF9641 /* FirebaseAuth in Frameworks */,
+				57839E112DD2070F00297406 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +133,7 @@
 			name = FlipZon;
 			packageProductDependencies = (
 				57A381232DCC842B00DF9641 /* FirebaseAuth */,
+				57839E102DD2070F00297406 /* FirebaseFirestore */,
 			);
 			productName = FlipZon;
 			productReference = 575FA1152DCB6D8000100B37 /* FlipZon.app */;
@@ -587,6 +590,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		57839E102DD2070F00297406 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57A381222DCC842B00DF9641 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
 		57A381232DCC842B00DF9641 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 57A381222DCC842B00DF9641 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct HomeScreenView: View {
+    @EnvironmentObject var cartManager: CartManager
     @StateObject var viewModel = HomeViewModel()
     @State private var searchText = ""
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
@@ -33,12 +34,35 @@ struct HomeScreenView: View {
                     }
                 }
                 .navigationTitle("Products")
-                .navigationBarItems(trailing:
-                                        NavigationLink(destination: SettingScreenView()) {
-                                    Image(systemName: "gearshape.fill")
-                                        .imageScale(.large)
+                .navigationBarBackButtonHidden(true)
+                .toolbar {
+                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+                        // Settings button
+                        NavigationLink(destination: SettingScreenView()) {
+                            Image(systemName: "gearshape.fill")
+                                .imageScale(.large)
+                        }
+                        
+                        // Cart button with badge
+                        NavigationLink(destination: CartScreenView()) {
+                            ZStack(alignment: .topTrailing) {
+                                Image(systemName: "cart")
+                                    .font(.title2)
+                                
+                                if cartManager.items.count > 0 {
+                                    Text("\(cartManager.items.count)")
+                                        .font(.caption2)
+                                        .foregroundColor(.white)
+                                        .padding(4)
+                                        .background(Color.red)
+                                        .clipShape(Circle())
+                                        .offset(x: 10, y: -10)
                                 }
-                            )
+                            }
+                        }
+                        
+                    }
+                }
             }
             .onAppear {
                 viewModel.loadInitialProducts()
