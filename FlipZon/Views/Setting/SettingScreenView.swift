@@ -7,8 +7,9 @@ struct SettingScreenView: View {
         Form {
             Section(header: Text("Account")) {
                 NavigationLink("Profile", destination: Text("Profile Page"))
-                NavigationLink("Orders", destination: Text("Profile Page"))
-                
+                NavigationLink(destination: OrdersScreenView()) {
+                    Label("My Orders", systemImage: "bag")
+                }
             }
             Section(header: Text("App")) {
                             NavigationLink("About", destination: Text("About App"))

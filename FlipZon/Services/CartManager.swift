@@ -5,6 +5,7 @@ import FirebaseAuth
 
 class CartManager: ObservableObject {
     @Published var items: [CartItem] = []
+    @Published var ordeItems: [Order] = []
     @Published var isAddingToCart = false
     private var db = Firestore.firestore()
     
@@ -12,6 +13,12 @@ class CartManager: ObservableObject {
         guard let uid = Auth.auth().currentUser?.uid else { return nil }
         return db.collection("users").document(uid).collection("cart")
     }
+    
+    func userOrdersRef() -> CollectionReference? {
+        guard let uid = Auth.auth().currentUser?.uid else { return nil }
+        return Firestore.firestore().collection("users").document(uid).collection("orders")
+    }
+
     
     func fetchCart() {
         userCartRef()?.addSnapshotListener { snapshot, error in
@@ -84,4 +91,43 @@ class CartManager: ObservableObject {
             }
         }
     }
+    
+    func placeOrder(completion: @escaping (Bool) -> Void) {
+        guard let orderRef = userOrdersRef(), !items.isEmpty else {
+            completion(false)
+            return
+        }
+
+        let total = items.reduce(0) { $0 + (Double($1.price) * Double($1.quantity)) }
+        let order = Order(
+            userId: Auth.auth().currentUser?.uid ?? "",
+            items: items,
+            total: total,
+            createdAt: Date()
+        )
+
+        do {
+            try orderRef.addDocument(from: order) { error in
+                if let error = error {
+                    print("Failed to place order: \(error.localizedDescription)")
+                    completion(false)
+                } else {
+                   
+                    self.clearCart()
+                    completion(true)
+                }
+            }
+        } catch {
+            print("Encoding error: \(error)")
+            completion(false)
+        }
+    }
+    
+    func fetchOrders() {
+        userOrdersRef()?.addSnapshotListener { snapshot, error in
+            guard let documents = snapshot?.documents else { return }
+            self.ordeItems = documents.compactMap { try? $0.data(as: Order.self) }
+        }
+    }
+
 }

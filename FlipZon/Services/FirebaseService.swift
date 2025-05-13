@@ -8,7 +8,7 @@ class FirebaseManager:ObservableObject {
     private init() {}
     @Published var isLoggedIn: Bool = Auth.auth().currentUser != nil
     
-    // Sign Up
+    
     func signUp(email: String, password: String, completion: @escaping (Result<AuthDataResult, Error>) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             if let error = error {
@@ -16,10 +16,11 @@ class FirebaseManager:ObservableObject {
             } else if let authResult = authResult {
                 completion(.success(authResult))
             }
-        }    }
+        }
+    }
 
     
-    // Login
+   
     func login(email: String, password: String, completion: @escaping (Result<AuthDataResult, Error>) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
             if let error = error {
@@ -31,13 +32,13 @@ class FirebaseManager:ObservableObject {
     }
 
     
-    // Sign Out
     func signOut() throws {
         try Auth.auth().signOut()
     }
     
-    // Get current user
     func getCurrentUser() -> User? {
         return Auth.auth().currentUser
     }
+    
+    
 }
