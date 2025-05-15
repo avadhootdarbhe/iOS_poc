@@ -35,7 +35,7 @@ class SignUpViewModel: ObservableObject {
         isNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid
     }
     
-    func signUp(completion: @escaping (Bool) -> Void) {
+    func signUp(session: SessionManager) {
         isLoading = true
         errorMessage = nil
         
@@ -44,10 +44,9 @@ class SignUpViewModel: ObservableObject {
                 self.isLoading = false
                 switch result {
                 case .success:
-                    completion(true)
+                    session.logIn()
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
-                    completion(false)
                 }
             }
         }

@@ -51,11 +51,7 @@ struct SignUpScreenView: View {
                                 }
                 
                 Button(action: {
-                    authVM.signUp { success in
-                                        if success {
-                                            session.isLoggedIn = true
-                                        }
-                                    }
+                    authVM.signUp(session: session)
                                 }) {
                                     Text(authVM.isLoading ? "Signing up..." : "Sign Up")
                                         .foregroundColor(.white)
