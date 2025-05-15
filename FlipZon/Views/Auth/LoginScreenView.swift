@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct LoginScreenView: View {
-    @StateObject private var viewModel = AuthViewModel()
+    @StateObject private var viewModel = LoginViewModel()
     @State private var navigateToHome: Bool = false
     var body: some View {
         NavigationStack {

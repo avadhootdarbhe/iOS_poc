@@ -2,7 +2,7 @@
 import SwiftUI
 
 struct SignUpScreenView: View {
-    @StateObject private var authVM = AuthViewModel()
+    @StateObject private var authVM = SignUpViewModel()
     @State var navigateToHome: Bool = false
     @Environment(\.dismiss) var dismiss
     

@@ -3,6 +3,7 @@ import SwiftUI
 struct SettingScreenView: View {
     @State private var showLogoutConfirm = false
     @EnvironmentObject var session: SessionManager
+    @StateObject private var viewModel = LoginViewModel()
     var body: some View {
         Form {
             Section(header: Text("Account")) {
@@ -29,7 +30,9 @@ struct SettingScreenView: View {
             
             Button("Cancel", role: .cancel) {}
             Button("Log Out", role: .destructive) {
-                session.logOut()            }
+                viewModel.logout()
+                session.logOut()
+            }
         }
     }
 }

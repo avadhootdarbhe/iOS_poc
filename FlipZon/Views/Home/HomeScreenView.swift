@@ -34,7 +34,6 @@ struct HomeScreenView: View {
                     }
                 }
                 .navigationTitle("Products")
-                .navigationBarBackButtonHidden(true)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         // Settings button
@@ -63,7 +62,9 @@ struct HomeScreenView: View {
                         
                     }
                 }
+                
             }
+            .navigationBarBackButtonHidden(true)
             .onAppear {
                 viewModel.loadInitialProducts()
             }

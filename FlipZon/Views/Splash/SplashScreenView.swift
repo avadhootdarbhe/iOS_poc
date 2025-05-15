@@ -10,12 +10,26 @@ import SwiftUI
 struct SplashScreenView: View {
     @State private var scale: CGFloat = 0.6
     @State private var opacity: Double = 0.5
-    @State private var isActive: Bool = false
+    @State private var showRoot: Bool = false
+    @State private var isLoggedIn: Bool? = nil
     
-    
+    @EnvironmentObject var session: SessionManager
     var body: some View {
-        if isActive {
-            RootScreen()
+        if showRoot {
+            Group {
+                if isLoggedIn == nil {
+                    ProgressView("Loading...")
+                } else if isLoggedIn == true {
+                    if session.isLoggedIn {
+                        HomeScreenView()
+                    } else {
+                        LoginScreenView()
+                    }
+                } else {
+                    LoginScreenView()
+                }
+            }
+            
         } else {
             VStack {
                 Image(systemName: "cart.fill")
@@ -35,8 +49,12 @@ struct SplashScreenView: View {
                     self.opacity = 1
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.isActive = true
+                    self.showRoot = true
                 }
+                
+                let user = FirebaseManager.shared.getCurrentUser()
+                isLoggedIn = (user != nil)
+            
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(GradientBackground())

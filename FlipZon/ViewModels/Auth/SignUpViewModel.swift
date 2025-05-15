@@ -2,7 +2,7 @@ import Foundation
 import FirebaseAuth
 import Combine
 
-class AuthViewModel: ObservableObject {
+class SignUpViewModel: ObservableObject {
     
     @Published var email: String = ""
     @Published var password: String = ""
@@ -35,24 +35,6 @@ class AuthViewModel: ObservableObject {
         isNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid
     }
     
-    func login(completion: @escaping (Bool) -> Void) {
-        isLoading = true
-        errorMessage = nil
-        
-        FirebaseManager.shared.login(email: email, password: password) { result in
-            DispatchQueue.main.async {
-                self.isLoading = false
-                switch result {
-                case .success:
-                    completion(true)
-                case .failure(let error):
-                    self.errorMessage = error.localizedDescription
-                    completion(false)
-                }
-            }
-        }
-    }
-    
     func signUp(completion: @escaping (Bool) -> Void) {
         isLoading = true
         errorMessage = nil
@@ -70,19 +52,4 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
-    
-    func logout() {
-        isLoading = true
-        errorMessage = nil
-        do {
-            try FirebaseManager.shared.signOut()
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-        
-    }
-
-
-
-    
 }
