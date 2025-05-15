@@ -15,7 +15,7 @@ struct HomeScreenView: View {
                             NavigationLink(destination: ProductDetailScreenView(product: product)) {
                                 ProductCard(product: product)
                                     .onAppear {
-                                        // Safe pagination trigger — when user scrolls near end
+                                       
                                         if index == viewModel.products.count - 3 {
                                             viewModel.loadNextPage()
                                         }

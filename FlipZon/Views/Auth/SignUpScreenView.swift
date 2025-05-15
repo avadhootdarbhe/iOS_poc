@@ -3,7 +3,7 @@ import SwiftUI
 
 struct SignUpScreenView: View {
     @StateObject private var authVM = SignUpViewModel()
-    @State var navigateToHome: Bool = false
+    @EnvironmentObject var session: SessionManager
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -53,7 +53,7 @@ struct SignUpScreenView: View {
                 Button(action: {
                     authVM.signUp { success in
                                         if success {
-                                            navigateToHome = true
+                                            session.isLoggedIn = true
                                         }
                                     }
                                 }) {
@@ -75,9 +75,6 @@ struct SignUpScreenView: View {
             .padding()
             .navigationBarBackButtonHidden(true)
             .navigationTitle("Sign Up")
-            .navigationDestination(isPresented: $navigateToHome) {
-                HomeScreenView()
-                        }
         }
     }
 

@@ -7,7 +7,7 @@ class HomeViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let service = APIService()
-    private let pageSize = 10
+    private let limit = 10
     private var currentOffset = 0
     
     func loadInitialProducts() {
@@ -22,7 +22,7 @@ class HomeViewModel: ObservableObject {
             guard !isLoading && hasMoreData else { return }
             
             isLoading = true
-        APIService.shared.fetchProducts(offset: currentOffset, limit: pageSize) { result in
+        APIService.shared.fetchProducts(offset: currentOffset, limit: limit) { result in
                 DispatchQueue.main.async {
                     self.isLoading = false
                     switch result {

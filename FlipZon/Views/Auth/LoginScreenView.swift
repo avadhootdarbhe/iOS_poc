@@ -2,7 +2,7 @@ import SwiftUI
 
 struct LoginScreenView: View {
     @StateObject private var viewModel = LoginViewModel()
-    @State private var navigateToHome: Bool = false
+    @EnvironmentObject var session: SessionManager
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
@@ -57,11 +57,7 @@ struct LoginScreenView: View {
                 }
                 
                 Button(action: {
-                    viewModel.login { success in
-                        if success {
-                            navigateToHome = true
-                        }
-                    }
+                    viewModel.login(session: session)
                 }) {
                     Text(viewModel.isLoading ? "Loading..." : "Login")
                         .foregroundColor(.white)
@@ -83,9 +79,6 @@ struct LoginScreenView: View {
             .frame(maxWidth: screenWidth, maxHeight: screenHeight, alignment: .top)
             .padding()
             .navigationBarTitle("Welcome Back!")
-            .navigationDestination(isPresented: $navigateToHome) {
-                HomeScreenView()
-                        }
             
             
         }

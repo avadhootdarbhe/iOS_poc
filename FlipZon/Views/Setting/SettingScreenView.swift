@@ -30,7 +30,6 @@ struct SettingScreenView: View {
             
             Button("Cancel", role: .cancel) {}
             Button("Log Out", role: .destructive) {
-                viewModel.logout()
                 session.logOut()
             }
         }

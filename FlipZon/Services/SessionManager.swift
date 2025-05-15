@@ -10,6 +10,7 @@ class SessionManager: ObservableObject {
         do {
             try Auth.auth().signOut()
             isLoggedIn = false
+            print("is LoggedIn: ", isLoggedIn)
         } catch {
             print("Logout error:", error.localizedDescription)
         }

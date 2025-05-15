@@ -29,9 +29,27 @@ class LoginViewModel: ObservableObject {
                 switch result {
                 case .success:
                     completion(true)
+                    
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                     completion(false)
+                }
+            }
+        }
+    }
+    
+    func login(session: SessionManager) {
+        isLoading = true
+        errorMessage = nil
+        FirebaseManager.shared.login(email: email, password: password) { result in
+            DispatchQueue.main.async {
+                self.isLoading = false
+                switch result {
+                case .success:
+                    session.logIn()
+                    
+                case .failure(let error):
+                    self.errorMessage = error.localizedDescription
                 }
             }
         }
