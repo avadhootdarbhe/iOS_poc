@@ -30,6 +30,7 @@ struct ImageCarouselView: View {
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
         .cornerRadius(12)
         .shadow(radius: 5)
+       
     }
 }
 

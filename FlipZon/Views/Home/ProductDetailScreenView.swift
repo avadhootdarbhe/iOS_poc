@@ -51,6 +51,7 @@ struct ProductDetailScreenView: View {
             }
             .navigationTitle("Details")
             .navigationBarTitleDisplayMode(.inline)
+            .padding()
             
         }
     }

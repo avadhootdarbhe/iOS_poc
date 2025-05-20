@@ -1,6 +1,7 @@
 import Foundation
 import FirebaseAuth
 
+
 class FirebaseManager:ObservableObject {
     
     static let shared = FirebaseManager()
