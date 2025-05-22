@@ -6,6 +6,13 @@ class LoginViewModel: ObservableObject {
     @Published var password: String = ""
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
+    
+    private let authService: AuthServiceProtocol
+
+        init(authService: AuthServiceProtocol = FirebaseManager.shared) {
+            self.authService = authService
+        }
+
 
     var isEmailValid: Bool {
         Validators.isValidEmail(email)
@@ -23,13 +30,13 @@ class LoginViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        FirebaseManager.shared.login(email: email, password: password) { result in
+        authService.login(email: email, password: password) { result in
             DispatchQueue.main.async {
                 self.isLoading = false
                 switch result {
-                case .success:
+                case .success(let user):
+                    print("Logged in user: \(user.email)")
                     completion(true)
-                    
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                     completion(false)
@@ -37,23 +44,24 @@ class LoginViewModel: ObservableObject {
             }
         }
     }
+
     
-    func login(session: SessionManager) {
-        isLoading = true
-        errorMessage = nil
-        FirebaseManager.shared.login(email: email, password: password) { result in
-            DispatchQueue.main.async {
-                self.isLoading = false
-                switch result {
-                case .success:
-                    session.logIn()
-                    
-                case .failure(let error):
-                    self.errorMessage = error.localizedDescription
-                }
-            }
-        }
-    }
+//    func login(session: SessionManager) {
+//        isLoading = true
+//        errorMessage = nil
+//        FirebaseManager.shared.login(email: email, password: password) { result in
+//            DispatchQueue.main.async {
+//                self.isLoading = false
+//                switch result {
+//                case .success:
+//                    session.logIn()
+//                    
+//                case .failure(let error):
+//                    self.errorMessage = error.localizedDescription
+//                }
+//            }
+//        }
+//    }
 
     func logout() {
         isLoading = true

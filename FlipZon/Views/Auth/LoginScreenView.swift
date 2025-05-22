@@ -25,6 +25,8 @@ struct LoginScreenView: View {
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
+                        .accessibilityIdentifier("EmailTextField")
+                        
                 }
                 .padding(.horizontal)
                 .frame(height: 50)  // Consistent height
@@ -66,6 +68,7 @@ struct LoginScreenView: View {
                         .background(viewModel.isFormValid ? Color.blue : Color.gray)
                         .cornerRadius(8)
                 }
+                .accessibilityIdentifier("LoginButton")
                 .disabled(!viewModel.isFormValid || viewModel.isLoading)
                 
                 NavigationLink(destination: SignUpScreenView()) {

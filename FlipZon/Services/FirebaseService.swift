@@ -2,7 +2,7 @@ import Foundation
 import FirebaseAuth
 
 
-class FirebaseManager:ObservableObject {
+class FirebaseManager:ObservableObject, AuthServiceProtocol {
     
     static let shared = FirebaseManager()
     
@@ -22,15 +22,17 @@ class FirebaseManager:ObservableObject {
 
     
    
-    func login(email: String, password: String, completion: @escaping (Result<AuthDataResult, Error>) -> Void) {
+    func login(email: String, password: String, completion: @escaping (Result<SimpleUser, Error>) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
             if let error = error {
                 completion(.failure(error))
-            } else if let authResult = authResult {
-                completion(.success(authResult))
+            } else if let user = authResult?.user {
+                let simpleUser = SimpleUser(uid: user.uid, email: user.email ?? "")
+                completion(.success(simpleUser))
             }
         }
     }
+
 
     
     func signOut() throws {

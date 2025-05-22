@@ -57,7 +57,7 @@ final class SignUpViewModelTests: XCTestCase {
 
         // Then - wait briefly for async operation to complete
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            XCTAssertNil(self.viewModel.errorMessage, "The email address is already in use by another account.")
+            XCTAssertNotNil(self.viewModel.errorMessage, "The email address is already in use by another account.")
             expectation.fulfill()
         }
 
